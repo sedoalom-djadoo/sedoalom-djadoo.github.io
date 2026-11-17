@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>QuickBooks data quality audit | Sedoalom Djadoo</title>
+<meta name="description" content="Ten QuickBooks data entry problems found while building a Power BI financial dashboard, and how to fix each one.">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<header class="site">
+  <div class="wrap">
+    <a class="name" href="./">Sedoalom Djadoo</a>
+    <nav><a href="./#projects">Projects</a><a href="automation.html">Automation</a><a href="https://github.com/sedoalom-djadoo">GitHub</a></nav>
+  </div>
+</header>
+
+<main class="wrap article">
+  <h1>What the dashboard revealed about our QuickBooks file</h1>
+  <p class="meta">Data quality audit · Clinical research company, three clinics · 2026</p>
+
+  <p>To build the financial dashboard, I had to read every QuickBooks export line by line: the general ledger, the customer transaction list, the chart of accounts, and the billing team's Excel files. A lot of the Power Query code exists only to work around the way data gets entered.</p>
+  <p>Workarounds break the day someone types a sponsor name a new way. So I wrote down what I found and what Finance could change at the source. Sponsor names and figures are left out here; the patterns are the point.</p>
+
+  <div class="callout">If these fixes are applied, QuickBooks can be the single source of truth. The parallel Excel files go away, and the dashboard can refresh with no manual step.</div>
+
+  <h2>The ten findings</h2>
+  <div class="table-wrap">
+  <table>
+    <thead><tr><th>#</th><th>What I found</th><th>Why it matters</th><th>Fix</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>All clinical revenue goes to one income account, with no sponsor, study or clinic attached.</td><td>QuickBooks cannot report revenue by sponsor or clinic. The billing team keeps a separate Excel file to do it, so there are two versions of the truth.</td><td>Tag each invoice with sponsor, study and clinic using QuickBooks Customer and Class fields.</td></tr>
+      <tr><td>2</td><td>The same sponsor exists under several customer names. One appears under five.</td><td>Any report filtered by customer misses part of the revenue, including receivables aging.</td><td>Merge duplicates with "Merge Customers" and name customers after the legal entity on the contract.</td></tr>
+      <tr><td>3</td><td>A payroll vendor, a grant body and an expense re-invoicing account are listed as customers next to the sponsors.</td><td>A clean sponsor revenue report needs manual filtering every time.</td><td>Give grants and re-invoiced expenses their own income accounts. Keep vendors out of the customer list.</td></tr>
+      <tr><td>4</td><td>82 accounts, plus several customers, were "deleted" by adding "(deleted)" to their name.</td><td>They still show up in exports and pollute every automated report.</td><td>Use "Make Inactive" instead. History is kept and the record disappears from new entries.</td></tr>
+      <tr><td>5</td><td>The billing files run November to October. The books run September to August.</td><td>The same invoice lands in different fiscal years depending on the source.</td><td>Align billing on the official fiscal year, or document the offset if it is contractual.</td></tr>
+      <tr><td>6</td><td>USD invoices sit on their own receivable account, but the exchange rate used is not recorded.</td><td>CAD totals cannot be rebuilt or audited.</td><td>Turn on QuickBooks multi-currency so each USD invoice carries its rate on the invoice date.</td></tr>
+      <tr><td>7</td><td>Only about 8 % of the 160,000+ ledger lines say which clinic they belong to.</td><td>No profit and loss by clinic. The dashboard has to allocate costs and say so.</td><td>Make the Class field mandatory (QuickBooks can enforce it) with one class per clinic plus "Head office".</td></tr>
+      <tr><td>8</td><td>About 93 % of invoices have an empty Memo field.</td><td>The memo is the only place an invoice can name its study. When it is filled in, it works well.</td><td>A required memo format: protocol code plus type of service.</td></tr>
+      <tr><td>9</td><td>About one revenue entry in five has no sponsor name, mostly period-end journal entries.</td><td>Real revenue that no automated report can assign.</td><td>Add the sponsor to accrual and work-in-progress entries. Document the few that truly have none.</td></tr>
+      <tr><td>10</td><td>In the billing files, sponsor names change format from year to year, sometimes with the study code inside the name.</td><td>Each variant needs its own mapping rule, and every rule is a chance for a gap.</td><td>One convention for all years: contract name, then study code in parentheses.</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h2>What I took from it</h2>
+  <p>Most of these are small habits, not system problems. Nobody chose to break reporting; each shortcut made sense to the person typing at the time. That changes how you present the findings. A list of errors puts people on the defensive. A list of fixes, each tied to a report they want and can't get today, gets a different reception.</p>
+  <p>It also changed the dashboard. Finding 7 is why the margin-by-clinic chart is labeled as an allocation and shows its tagging coverage in the title. The report tells the reader how far to trust it, and the number goes up as the fix gets adopted.</p>
+
+  <p><a class="back" href="./#projects">Back to projects</a></p>
+</main>
+
+<footer><div class="wrap">Sedoalom Djadoo · <a href="https://github.com/sedoalom-djadoo">github.com/sedoalom-djadoo</a></div></footer>
+</body>
+</html>

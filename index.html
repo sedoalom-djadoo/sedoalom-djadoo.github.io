@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sedoalom Djadoo | Digital Transformation Manager</title>
+<meta name="description" content="Power BI and data projects by Sedoalom Djadoo: clinical operations and financial dashboards, a QuickBooks data quality audit, and a QuickBooks Online to Power BI automation.">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<header class="site">
+  <div class="wrap">
+    <a class="name" href="./">Sedoalom Djadoo</a>
+    <nav>
+      <a href="#projects">Projects</a>
+      <a href="#skills">Skills</a>
+      <a href="https://github.com/sedoalom-djadoo">GitHub</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="hero">
+    <h1>Sedoalom Djadoo</h1>
+    <p class="role">Digital Transformation Manager · Business intelligence · Ottawa, ON</p>
+    <p class="lead">I work at a clinical research company. I started on the IT side, and over the past year I built the reporting the company now runs on.</p>
+    <p>There are two Power BI dashboards: one for clinical operations, used every day by the leadership team, and one for finance, refreshed every night from QuickBooks Online. Building them also meant fixing how the data gets entered in the first place. That work led to my current role.</p>
+    <p>Company data stays private, so the projects below were rebuilt with fictional data. The models, the DAX and the Power Query code are the ones I wrote.</p>
+    <div class="links">
+      <a class="btn primary" href="#projects">See the projects</a>
+      <a class="btn" href="https://github.com/sedoalom-djadoo">GitHub profile</a>
+    </div>
+  </section>
+
+  <section id="projects">
+    <h2>Projects</h2>
+    <p class="sub">Two dashboards, plus the two pieces of work behind them that changed how the company handles its data.</p>
+
+    <article class="project">
+      <a class="shot" href="https://github.com/sedoalom-djadoo/clinops"><img src="assets/clinops.jpg" alt="Clinical operations dashboard: patient funnel, cycle time by study, cost per patient, referrals over time" loading="lazy"></a>
+      <div>
+        <div class="kicker">Power BI · In daily use</div>
+        <h3>Clinical operations and cost per patient</h3>
+        <p>Before this dashboard, the clinic compiled its statistics by hand, after the fact. Nobody could see what a patient cost while a study was running.</p>
+        <p>It now follows every patient from referral to completion and puts a cost on each step. Leadership uses it to renegotiate sponsor budgets, decide which studies to take on, time new hires and rework the randomization step.</p>
+        <p>My favorite part to explain is a bug I first misread. A card disagreed with a chart and I blamed the visual. The real cause was which date relationship was filtering the table. The README walks through it.</p>
+        <div class="tags"><span>Power BI</span><span>DAX</span><span>Star schema</span><span>What-if simulation</span><span>TMDL</span></div>
+        <a class="more" href="https://github.com/sedoalom-djadoo/clinops">Model, DAX and write-up on GitHub</a>
+      </div>
+    </article>
+
+    <article class="project reverse">
+      <a class="shot" href="https://github.com/sedoalom-djadoo/finops"><img src="assets/finops.jpg" alt="Financial dashboard: revenue by site, sponsor and study, monthly trend and billing vs QuickBooks reconciliation" loading="lazy"></a>
+      <div>
+        <div class="kicker">Power BI · Nightly refresh from QuickBooks</div>
+        <h3>Financial dashboard on QuickBooks data</h3>
+        <p>Revenue by clinic, sponsor and study, gross margin, expenses, net income, EBITDA and the balance sheet, all on a September to August fiscal year.</p>
+        <p>QuickBooks exports are made for printing, so most of the work is in Power Query: filling account names down, dropping totals, matching one sponsor spelled five different ways.</p>
+        <p>One design choice matters more than it looks: the margin-by-clinic chart says plainly that it is an allocation, and shows how little of the cost data is actually tagged by clinic.</p>
+        <div class="tags"><span>Power BI</span><span>Power Query (M)</span><span>DAX</span><span>QuickBooks Online</span><span>Time intelligence</span></div>
+        <a class="more" href="https://github.com/sedoalom-djadoo/finops">Model, queries and write-up on GitHub</a>
+      </div>
+    </article>
+
+    <article class="project text-only">
+      <div>
+        <div class="kicker">Data governance</div>
+        <h3>What the dashboard revealed about our QuickBooks file</h3>
+        <p>Building the financial model meant reading every QuickBooks export line by line. I wrote up ten data entry problems that made reporting slow or wrong, with a concrete fix for each. One example: only about 8 % of the 160,000+ ledger lines said which clinic they belonged to, so no one could produce a profit and loss by site.</p>
+        <a class="more" href="audit.html">Read the audit</a>
+      </div>
+    </article>
+
+    <article class="project text-only">
+      <div>
+        <div class="kicker">Automation · In production</div>
+        <h3>From manual exports to a nightly QuickBooks API feed</h3>
+        <p>The first version of the financial dashboard depended on someone exporting Excel files from QuickBooks. I planned and rolled out a Python script that pulls the general ledger from the QuickBooks Online Reports API every night. It has been running in production since the summer of 2026.</p>
+        <a class="more" href="automation.html">See how it works</a>
+      </div>
+    </article>
+  </section>
+
+  <section id="skills">
+    <h2>Skills</h2>
+    <p class="sub">What I use day to day.</p>
+    <div class="skills">
+      <div><h3>Business intelligence</h3><p>Power BI, DAX, Power Query (M), star schema modeling, PBIP / TMDL, time intelligence on a custom fiscal year.</p></div>
+      <div><h3>Data and automation</h3><p>Python, SQL, QuickBooks Online API, Power Automate, data quality audits, source-to-report reconciliation.</p></div>
+      <div><h3>IT and governance</h3><p>Microsoft 365 and Azure administration, Intune, Microsoft Purview, FortiGate networking, vendor management.</p></div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">Sedoalom Djadoo · <a href="https://github.com/sedoalom-djadoo">github.com/sedoalom-djadoo</a></div>
+</footer>
+</body>
+</html>

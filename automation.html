@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>QuickBooks to Power BI automation | Sedoalom Djadoo</title>
+<meta name="description" content="How a nightly QuickBooks Online Reports API feed replaced manual Excel exports for a Power BI financial dashboard.">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+<header class="site">
+  <div class="wrap">
+    <a class="name" href="./">Sedoalom Djadoo</a>
+    <nav><a href="./#projects">Projects</a><a href="audit.html">Audit</a><a href="https://github.com/sedoalom-djadoo">GitHub</a></nav>
+  </div>
+</header>
+
+<main class="wrap article">
+  <h1>From manual exports to a nightly QuickBooks API feed</h1>
+  <p class="meta">Automation · In production since summer 2026 · Refreshed every 24 hours</p>
+
+  <p>The first version of the financial dashboard ran on Excel files exported by hand from QuickBooks. It worked, but it depended on someone remembering to export, and on the export settings being the same every time. When either slipped, the dashboard went quietly out of date.</p>
+  <p>I replaced the ledger export with a script that calls the QuickBooks Online API every night and writes a clean file that Power BI picks up on its scheduled refresh.</p>
+
+  <div class="flow" aria-label="Data flow">
+    <div class="step"><b>QuickBooks Online</b>Reports API, general ledger report</div>
+    <div class="arrow">→</div>
+    <div class="step"><b>Python script</b>Token refresh, date range, pagination, run log</div>
+    <div class="arrow">→</div>
+    <div class="step"><b>Versioned file</b>Dated CSV in a folder Power BI can read</div>
+    <div class="arrow">→</div>
+    <div class="step"><b>Power BI</b>Scheduled refresh shortly after the script</div>
+  </div>
+
+  <h2>Why the Reports API</h2>
+  <p>QuickBooks Online has two families of endpoints. The entity API returns invoices, bills and journal entries one by one; turning those into a general ledger means rebuilding accounting logic that QuickBooks already applies. The Reports API returns the general ledger as QuickBooks itself computes it.</p>
+  <p>The native Power BI connector and the paid third-party connectors I looked at all sit on the entity API. Calling the Reports API directly gave the same numbers as the manual export, with no gateway and no extra licence.</p>
+
+  <h2>How I rolled it out</h2>
+  <ol class="phases">
+    <li>I registered an Intuit developer app and tested the authorization on the sandbox company first. The redirect URI has to match character for character, and a mismatch there is the usual reason it fails. Credentials and the refresh token live in a password manager, never in a shared folder or a repository.</li>
+    <li>Before building anything else, I pulled one closed, already reconciled month and compared it line by line with the manual export: account numbers, dates, amounts, sign convention. Nothing else got written until it matched exactly.</li>
+    <li>The script refreshes the token before every call, handles pagination over the full date range, writes dated files and logs every run (time, range, row count, errors). A silent failure is worse than a loud one. Without the log, a failed night just leaves the dashboard stale.</li>
+    <li>In Power BI, only the query step that reads the file changed. The model stayed the same, and the totals were checked against the P&amp;L again. The plan kept the manual export running in parallel for a full quarter before retiring it.</li>
+    <li>The script runs nightly and the Power BI refresh follows with a buffer. There is a reminder around day 90, because the refresh token expires after 100 days without use and then someone has to redo the consent screen by hand.</li>
+    <li>The developer account and the credentials have a named owner, and a short runbook says what the script does, where it lives and who to call when a refresh fails.</li>
+  </ol>
+
+  <h2>What it doesn't solve</h2>
+  <p>The API automates the general ledger only. Revenue by sponsor, study and clinic still comes from the billing team's spreadsheets, because QuickBooks doesn't hold that breakdown. Closing that gap depends on the data entry fixes in the <a href="audit.html">QuickBooks audit</a>, not on more code.</p>
+
+  <p><a class="back" href="./#projects">Back to projects</a></p>
+</main>
+
+<footer><div class="wrap">Sedoalom Djadoo · <a href="https://github.com/sedoalom-djadoo">github.com/sedoalom-djadoo</a></div></footer>
+</body>
+</html>
